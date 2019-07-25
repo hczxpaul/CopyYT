@@ -13,9 +13,45 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        navigationItem.title = "Home"
+        
+        // Display label "Home"
+        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width-30, height: view.frame.height))
+        titleLabel.text = "Home"
+        titleLabel.textColor = UIColor.white
+        titleLabel.font = UIFont.systemFont(ofSize: 20)
+        navigationItem.titleView = titleLabel
+        
+        self.navigationController!.navigationBar.isTranslucent = false
+        
         collectionView?.backgroundColor = .white
         collectionView?.register(YouTubeVideoCell.self, forCellWithReuseIdentifier: "HomeCellId")
+        
+        setupNavBarButtons()
+    }
+    
+    func setupNavBarButtons() {
+        let searchImage = UIImage(named: "search")?.withRenderingMode(.alwaysOriginal)
+        let searchButtonItem = UIBarButtonItem(image: searchImage, style: .plain, target: self, action: #selector(handleSearch))
+        searchButtonItem.customView?.translatesAutoresizingMaskIntoConstraints = false
+        searchButtonItem.customView?.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        searchButtonItem.customView?.widthAnchor.constraint(equalToConstant: 24).isActive = true
+
+        let moreImage = UIImage(named: "more")?.withRenderingMode(.alwaysOriginal)
+        let moreButtonItem = UIBarButtonItem(image: moreImage, style: .plain, target: self, action: #selector(handleMore))
+        moreButtonItem.customView?.translatesAutoresizingMaskIntoConstraints = false
+        moreButtonItem.customView?.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        moreButtonItem.customView?.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        
+        navigationItem.rightBarButtonItems = [moreButtonItem, searchButtonItem]
+
+    }
+    
+    @objc func handleSearch(){
+        print("search")
+    }
+    
+    @objc func handleMore(){
+        print("more")
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -28,8 +64,8 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size: CGSize = CGSize(width: view.frame.width, height: 200.0)
-        return size
+        let height = (view.frame.width - 20) * 9/16
+        return CGSize(width: view.frame.width, height: height + 90)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -45,32 +81,41 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let videoThumbnailView: UIImageView = {
             let imageView = UIImageView()
             imageView.backgroundColor = .blue
+            imageView.image = UIImage(named: "t01")
+            imageView.contentMode = .scaleAspectFill
+            imageView.clipsToBounds = true
             return imageView
         }()
         
         let separatorView: UIView = {
             let view = UIView()
-            view.backgroundColor = .black
+            view.backgroundColor = UIColor.rgb(red: 160, green: 160, blue: 160)
             return view
         }()
         
         let userImageView: UIImageView = {
             let imageView = UIImageView()
             imageView.backgroundColor = .black
+            imageView.image = UIImage(named: "t02")
+            imageView.layer.cornerRadius = 22
+            imageView.layer.masksToBounds = true
             return imageView
         }()
         
         let titleLable: UILabel = {
             let label = UILabel()
-            label.backgroundColor = .green
             label.translatesAutoresizingMaskIntoConstraints = false
+            label.text = "Hello world!!"
             return label
         }()
         
         let subtitileTextView: UITextView = {
             let textView = UITextView()
-            textView.backgroundColor = .yellow
             textView.translatesAutoresizingMaskIntoConstraints = false
+            textView.isUserInteractionEnabled = false
+            textView.text = "ME • 123910 views"
+            textView.textContainerInset = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 0)
+            textView.textColor = UIColor.rgb(red: 160, green: 160, blue: 160)
             return textView
         }()
         
@@ -114,20 +159,5 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         
         
-    }
-}
-
-extension UIView {
-    func addConstrainWithVisualFormats(format: String, views: UIView...) {
-        
-        var viewsDict = [String: UIView]()
-        
-        for (index, view) in views.enumerated() {
-            let key = "v\(index)"
-            viewsDict[key] = view
-            view.translatesAutoresizingMaskIntoConstraints = false
-        }
-        
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDict))
     }
 }
