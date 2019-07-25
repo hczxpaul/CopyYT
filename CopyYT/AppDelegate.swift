@@ -21,9 +21,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         let layout = UICollectionViewFlowLayout()
-        window?.rootViewController = UINavigationController.init(rootViewController: ViewController(collectionViewLayout: layout))
+        window?.rootViewController = UINavigationController.init(rootViewController: HomeController(collectionViewLayout: layout))
         
-        UINavigationBar.appearance().barTintColor = UIColor.rgb(red: 239, green: 32, blue: 31)
+        UINavigationBar.appearance().barTintColor = UIColor.rgb(red: 160, green: 160, blue: 160)
+        
+        let statusBarBackgroundView = UIView()
+        statusBarBackgroundView.backgroundColor = UIColor.rgb(red: 100, green: 100, blue: 100)
+        window?.addSubview(statusBarBackgroundView)
+        window?.addConstrainWithVisualFormats(format: "H:|[v0]|", views: statusBarBackgroundView)
+        window?.addConstrainWithVisualFormats(format: "V:|[v0(35)]|", views: statusBarBackgroundView)
         
         return true
     }
